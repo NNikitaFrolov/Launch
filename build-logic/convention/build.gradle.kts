@@ -50,5 +50,9 @@ gradlePlugin {
             id = "launch.jvm.library"
             implementationClass = "JvmLibraryConventionPlugin"
         }
+        register("androidKoin") {
+            id = "launch.koin"
+            implementationClass = "AndroidKoinConventionPlugin"
+        }
     }
 }
