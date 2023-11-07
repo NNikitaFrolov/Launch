@@ -1,4 +1,4 @@
-package nikitafrolov.launch.ui.theme
+package nikitafrolov.app.ui.theme
 
 import android.app.Activity
 import android.os.Build

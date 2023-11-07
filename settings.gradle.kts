@@ -16,3 +16,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "Launch"
 include(":app")
+include(":launch:app")
