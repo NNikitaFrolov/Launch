@@ -15,5 +15,7 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "Launch"
+
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 include(":app")
-include(":launch:app")
+include(":root:app")

@@ -39,5 +39,5 @@ android {
 
 dependencies {
 
-    implementation(project(":launch:app"))
+    implementation(projects.root.app)
 }
