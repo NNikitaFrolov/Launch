@@ -1,3 +1,5 @@
+import nikitafrolov.convention.LaunchBuildType
+
 plugins {
     alias(libs.plugins.launch.android.application)
     alias(libs.plugins.launch.android.application.compose)
@@ -20,14 +22,12 @@ android {
 
     buildTypes {
         debug {
-            applicationIdSuffix = ".debug"
+            applicationIdSuffix = LaunchBuildType.DEBUG.applicationIdSuffix
         }
         release {
-            isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
+            isMinifyEnabled = true
+            applicationIdSuffix = LaunchBuildType.RELEASE.applicationIdSuffix
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
     packaging {

@@ -3,7 +3,7 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.dependencies
 
-class AndroidKoinConventionPlugin : Plugin<Project> {
+class KoinConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             with(pluginManager) {
@@ -11,6 +11,8 @@ class AndroidKoinConventionPlugin : Plugin<Project> {
             }
 
             dependencies {
+                val koinBom = libs.findLibrary("koin-bom").get()
+                add("implementation", platform(koinBom))
                 "implementation"(libs.findLibrary("koin.android").get())
                 "implementation"(libs.findLibrary("koin.annotations").get())
                 "ksp"(libs.findLibrary("koin.ksp.compiler").get())
