@@ -19,3 +19,4 @@ rootProject.name = "Launch"
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 include(":app")
 include(":root:app")
+include(":root:model")
