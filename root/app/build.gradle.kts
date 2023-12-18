@@ -17,6 +17,8 @@ dependencies {
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.navigation.compose)
 
+    implementation(projects.root.feature.exchanger)
+
     testImplementation(libs.junit)
 
     androidTestImplementation(libs.androidx.test.ext)
