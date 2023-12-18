@@ -59,7 +59,6 @@ ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 
 # Plugins defined by this project
 launch-android-application = { id = "launch.android.application", version = "unspecified" }
-launch-android-application-compose = { id = "launch.android.application.compose", version = "unspecified" }
 launch-android-feature = { id = "launch.android.feature", version = "unspecified" }
 launch-android-library = { id = "launch.android.library", version = "unspecified" }
 launch-android-library-compose = { id = "launch.android.library.compose", version = "unspecified" }

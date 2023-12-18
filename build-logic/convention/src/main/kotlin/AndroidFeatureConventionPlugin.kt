@@ -12,11 +12,13 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
             }
 
             dependencies {
+                add("implementation", project(":root:core:model"))
+                add("implementation", project(":root:core:designsystem"))
+
                 add("testImplementation", kotlin("test"))
                 add("androidTestImplementation", kotlin("test"))
 
                 add("implementation", libs.findLibrary("androidx-navigation-compose").get())
-                add("implementation", libs.findLibrary("androidx.compose.material3").get())
             }
         }
     }

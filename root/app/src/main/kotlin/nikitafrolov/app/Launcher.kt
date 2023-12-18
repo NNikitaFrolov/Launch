@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import nikitafrolov.app.ui.theme.LaunchTheme
+import nikitafrolov.designsystem.theme.LaunchTheme
 
 class Launcher : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

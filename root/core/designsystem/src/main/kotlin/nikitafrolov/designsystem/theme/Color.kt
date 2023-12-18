@@ -1,4 +1,4 @@
-package nikitafrolov.app.ui.theme
+package nikitafrolov.designsystem.theme
 
 import androidx.compose.ui.graphics.Color
 
