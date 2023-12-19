@@ -1,5 +1,7 @@
 package nikitafrolov.designsystem.icon
 
+import nikitafrolov.core.designsystem.R
+
 object LaunchIcons {
-    //TODO add icons
+    val AttachMoney = R.drawable.baseline_attach_money_24
 }
