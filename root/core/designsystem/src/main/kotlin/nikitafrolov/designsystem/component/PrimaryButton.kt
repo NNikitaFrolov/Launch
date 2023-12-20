@@ -127,7 +127,7 @@ private fun ButtonPreview() {
             )
             PrimaryButton(
                 text = "Button",
-                icon = painterResource(id = LaunchIcons.AttachMoney),
+                icon = painterResource(id = LaunchIcons.ArrowDown),
                 modifier = Modifier.padding(20.dp),
             )
             PrimaryButton(
@@ -137,13 +137,13 @@ private fun ButtonPreview() {
             )
             PrimaryButton(
                 text = "Button",
-                icon = painterResource(id = LaunchIcons.AttachMoney),
+                icon = painterResource(id = LaunchIcons.ArrowDown),
                 enabled = false,
                 modifier = Modifier.padding(20.dp),
             )
             PrimaryButton(
                 text = "Button",
-                icon = painterResource(id = LaunchIcons.AttachMoney),
+                icon = painterResource(id = LaunchIcons.ArrowDown),
                 isLoading = true,
                 modifier = Modifier.padding(20.dp),
             )

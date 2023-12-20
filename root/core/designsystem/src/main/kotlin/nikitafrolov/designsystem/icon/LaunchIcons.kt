@@ -3,5 +3,6 @@ package nikitafrolov.designsystem.icon
 import nikitafrolov.core.designsystem.R
 
 object LaunchIcons {
-    val AttachMoney = R.drawable.baseline_attach_money_24
+    val ArrowDown = R.drawable.arrow_down_24
+    val CompareArrows = R.drawable.compare_arrows_24
 }
