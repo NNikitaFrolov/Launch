@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="exchanger__title">Currency converter</string>
+    <string name="exchanger__sell_field_title">Sell</string>
+    <string name="exchanger__receive_field_title">Receive</string>
+    <string name="exchanger__button_submit">Submit</string>
 </resources>

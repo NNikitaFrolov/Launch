@@ -14,10 +14,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -38,7 +36,9 @@ import nikitafrolov.designsystem.component.Toolbar
 import nikitafrolov.designsystem.icon.LaunchIcons
 import nikitafrolov.designsystem.theme.LaunchTheme
 import nikitafrolov.designsystem.tools.clickableThrottle
+import nikitafrolov.designsystem.tools.text.stringText
 import nikitafrolov.feature.exchanger.R
+import org.koin.androidx.compose.getViewModel
 
 const val exchangerRoute = "exchanger"
 
@@ -51,20 +51,36 @@ fun NavGraphBuilder.exchangerScreen(
 }
 
 @Composable
-internal fun ExchangerScreen() {
-    ExchangerContent()
+private fun ExchangerScreen(
+    viewModel: ExchangerViewModel = getViewModel(),
+) {
+    val state by viewModel.state.collectAsState()
+
+    ExchangerContent(
+        state = state,
+        onSellAmountChange = viewModel::onSellAmountChange,
+        onPickSellAccount = viewModel::onPickSellAccount,
+        onReceiveAmountChange = viewModel::onReceiveAmountChange,
+        onPickReceiveAccount = viewModel::onPickReceiveAccount
+    )
 }
 
 @Preview
 @Composable
 private fun ExchangerPreview() {
     LaunchTheme {
-        ExchangerContent()
+        ExchangerContent(ExchangerState())
     }
 }
 
 @Composable
-private fun ExchangerContent() {
+private fun ExchangerContent(
+    state: ExchangerState,
+    onSellAmountChange: (TextFieldValue) -> Unit = {},
+    onPickSellAccount: () -> Unit = {},
+    onReceiveAmountChange: (TextFieldValue) -> Unit = {},
+    onPickReceiveAccount: () -> Unit = {},
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -77,23 +93,21 @@ private fun ExchangerContent() {
             Column(
                 modifier = Modifier.padding(24.dp)
             ) {
-                var sell by remember { mutableStateOf(TextFieldValue()) }
                 AmountInput(
-                    title = "Sell",
-                    amount = sell,
-                    balance = "1000 USD",
-                    onAmountChange = { sell = it },
-                    onClick = { }
+                    title = stringResource(R.string.exchanger__sell_field_title),
+                    amount = state.sell,
+                    balance = state.sellBalance,
+                    onAmountChange = { onSellAmountChange(it) },
+                    onClick = { onPickSellAccount() }
                 )
 
-                var receive by remember { mutableStateOf(TextFieldValue()) }
                 AmountInput(
                     modifier = Modifier.padding(top = 8.dp),
-                    title = "Receive",
-                    amount = receive,
-                    balance = "900 EUR",
-                    onAmountChange = { receive = it },
-                    onClick = { }
+                    title = stringResource(R.string.exchanger__receive_field_title),
+                    amount = state.receive,
+                    balance = state.receiveBalance,
+                    onAmountChange = { onReceiveAmountChange(it) },
+                    onClick = { onPickReceiveAccount() }
                 )
             }
 
@@ -115,7 +129,7 @@ private fun ExchangerContent() {
 
         PrimaryButton(
             modifier = Modifier.padding(24.dp),
-            text = "Submit" //TODO set from state
+            text = stringText(state.buttonTitle)
         )
     }
 }
