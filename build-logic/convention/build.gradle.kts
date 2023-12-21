@@ -50,5 +50,9 @@ gradlePlugin {
             id = "launch.koin"
             implementationClass = "KoinConventionPlugin"
         }
+        register("kotlinSerialization") {
+            id = "launch.kotlin.serialization"
+            implementationClass = "KotlinSerializationPlugin"
+        }
     }
 }

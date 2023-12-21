@@ -19,10 +19,15 @@ androidxNavigation = "2.7.6"
 org-jetbrains-kotlin-android = "1.8.10"
 kotlin = "1.9.10"
 kotlinxDatetime = "0.4.1"
+kotlinxSerialization = "1.6.2"
 ksp = "1.9.10-1.0.13"
 koinBom = "3.5.1"
 koinKsp = "1.3.0"
 junit = "4.13.2"
+retrofit2 = "2.9.0"
+okHttp = "4.12.0"
+timber = "5.0.1"
+retrofitKotlinSerialization = "1.0.0"
 
 [libraries]
 android-desugarJdkLibs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "androidDesugarJdkLibs" }
@@ -42,11 +47,16 @@ androidx-navigation-compose = { group = "androidx.navigation", name = "navigatio
 androidx-navigation-testing = { group = "androidx.navigation", name = "navigation-testing", version.ref = "androidxNavigation" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version.ref = "kotlinxDatetime" }
+kotlinx-serialization = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerialization" }
 koin-bom = { group = "io.insert-koin", name = "koin-bom", version.ref = "koinBom" }
 koin-android = { group = "io.insert-koin", name = "koin-android" }
 koin-android-compose = { group = "io.insert-koin", name = "koin-androidx-compose" }
 koin-annotations = { group = "io.insert-koin", name = "koin-annotations", version.ref = "koinKsp" }
 koin-ksp-compiler = { group = "io.insert-koin", name = "koin-ksp-compiler", version.ref = "koinKsp" }
+squareup-retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit2" }
+squareup-okHttp = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okHttp" }
+jakewharton-timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
+jakewharton-retrofit-converter = { group = "com.jakewharton.retrofit", name = "retrofit2-kotlinx-serialization-converter", version.ref = "retrofitKotlinSerialization" }
 
 # Dependencies of the included build-logic
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
@@ -58,6 +68,7 @@ android-application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }
 android-test = { id = "com.android.test", version.ref = "agp" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 
 # Plugins defined by this project
@@ -67,3 +78,4 @@ launch-android-library = { id = "launch.android.library", version = "unspecified
 launch-android-library-compose = { id = "launch.android.library.compose", version = "unspecified" }
 launch-jvm-library = { id = "launch.jvm.library", version = "unspecified" }
 launch-koin = { id = "launch.koin", version = "unspecified" }
+launch-kotlin-serialization = { id = "launch.kotlin.serialization", version = "unspecified" }
