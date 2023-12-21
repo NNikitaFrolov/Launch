@@ -37,7 +37,7 @@ class NetworkModule {
     }
 
     @Factory
-    fun provideRetrofit(retrofitProvider: RetrofitProvider, url: String): Retrofit {
+    fun provideRetrofit(retrofitProvider: RetrofitProvider): Retrofit {
         return retrofitProvider
             .provide("https://developers.paysera.com/")
             .build()

@@ -12,9 +12,11 @@ dependencies {
 
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.navigation.compose)
+    implementation(libs.jakewharton.timber)
 
     implementation(projects.root.core.model)
     implementation(projects.root.core.designsystem)
+    implementation(projects.root.core.network)
 
     implementation(projects.root.feature.exchanger)
 }
