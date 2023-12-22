@@ -1,6 +1,6 @@
 package nikitafrolov.network.result.retrofit
 
-import nikitafrolov.network.result.Result
+import nikitafrolov.model.result.Result
 import retrofit2.Call
 import retrofit2.CallAdapter
 import retrofit2.Retrofit

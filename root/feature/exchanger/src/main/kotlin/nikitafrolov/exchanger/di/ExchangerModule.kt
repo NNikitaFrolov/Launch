@@ -1,8 +1,10 @@
 package nikitafrolov.exchanger.di
 
+import nikitafrolov.exchanger.data.local.source.AccountLocalDataSourceImpl
 import nikitafrolov.exchanger.data.remote.api.CurrencyApi
-import nikitafrolov.exchanger.data.remote.source.CurrencyRemoteDataSourceImpl
-import nikitafrolov.exchanger.domain.source.remote.CurrencyRemoteDataSource
+import nikitafrolov.exchanger.data.remote.source.AccountRemoteDataSourceImpl
+import nikitafrolov.exchanger.domain.source.local.AccountLocalDataSource
+import nikitafrolov.exchanger.domain.source.remote.AccountRemoteDataSource
 import org.koin.core.annotation.ComponentScan
 import org.koin.core.annotation.Factory
 import org.koin.core.annotation.Module
@@ -17,8 +19,13 @@ class ExchangerModule {
         retrofit.create(CurrencyApi::class.java)
 
     @Factory
-    internal fun provideCurrencyRemoteDataSource(
-        dataSource: CurrencyRemoteDataSourceImpl
-    ): CurrencyRemoteDataSource = dataSource
+    internal fun provideAccountRemoteDataSource(
+        dataSource: AccountRemoteDataSourceImpl
+    ): AccountRemoteDataSource = dataSource
+
+    @Factory
+    internal fun provideAccountLocalDataSource(
+        dataSource: AccountLocalDataSourceImpl
+    ): AccountLocalDataSource = dataSource
 
 }

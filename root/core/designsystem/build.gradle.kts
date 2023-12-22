@@ -12,6 +12,8 @@ dependencies {
     api(libs.androidx.compose.ui.tooling.preview)
     api(libs.androidx.compose.constraintlayout)
 
+    implementation(projects.root.core.model)
+
     debugApi(libs.androidx.compose.ui.tooling)
 
     implementation(libs.androidx.core.ktx)

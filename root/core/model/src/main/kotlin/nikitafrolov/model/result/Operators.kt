@@ -1,4 +1,4 @@
-package nikitafrolov.network.result
+package nikitafrolov.model.result
 
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.contract
@@ -42,8 +42,8 @@ fun <T, R> Result<T>.flatMap(transform: (result: Result.Success<T>) -> Result<R>
 }
 
 fun <T> Result<T>.call(
-    success: (Result.Success<T>) -> Unit,
-    failure: (Result.Failure) -> Unit
+    failure: (Result.Failure) -> Unit = {},
+    success: (Result.Success<T>) -> Unit = {},
 ) {
     if (this.isSuccess()) {
         success.invoke(this)

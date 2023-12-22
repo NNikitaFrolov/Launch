@@ -1,4 +1,4 @@
-package nikitafrolov.network.result
+package nikitafrolov.model.result
 
 sealed class Result<out T> {
 
@@ -12,10 +12,10 @@ sealed class Result<out T> {
 
         data class HttpResponse<T>(
             override val value: T,
-            override val statusCode: Int,
-            override val statusMessage: String? = null,
-            override val url: String? = null,
-        ) : Success<T>(), IHttpResponse
+            val statusCode: Int,
+            val statusMessage: String? = null,
+            val url: String? = null,
+        ) : Success<T>()
 
         object Empty : Success<Nothing>() {
 
@@ -33,4 +33,4 @@ sealed class Result<out T> {
     }
 }
 
-typealias EmptyResult = Result<Nothing>
+typealias ResultEmpty = Result<Nothing>

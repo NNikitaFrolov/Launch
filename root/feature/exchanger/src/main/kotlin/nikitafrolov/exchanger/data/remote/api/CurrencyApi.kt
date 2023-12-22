@@ -1,7 +1,7 @@
 package nikitafrolov.exchanger.data.remote.api
 
 import nikitafrolov.exchanger.data.remote.model.CurrencyRateDto
-import nikitafrolov.network.result.Result
+import nikitafrolov.model.result.Result
 import retrofit2.http.GET
 
 internal interface CurrencyApi {

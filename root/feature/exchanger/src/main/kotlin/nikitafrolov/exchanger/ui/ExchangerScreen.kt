@@ -33,6 +33,7 @@ import androidx.navigation.compose.composable
 import nikitafrolov.designsystem.component.InputNumberDecimal
 import nikitafrolov.designsystem.component.PrimaryButton
 import nikitafrolov.designsystem.component.Toolbar
+import nikitafrolov.designsystem.extencion.format
 import nikitafrolov.designsystem.icon.LaunchIcons
 import nikitafrolov.designsystem.theme.LaunchTheme
 import nikitafrolov.designsystem.tools.clickableThrottle
@@ -60,7 +61,6 @@ private fun ExchangerScreen(
         state = state,
         onSellAmountChange = viewModel::onSellAmountChange,
         onPickSellAccount = viewModel::onPickSellAccount,
-        onReceiveAmountChange = viewModel::onReceiveAmountChange,
         onPickReceiveAccount = viewModel::onPickReceiveAccount
     )
 }
@@ -78,7 +78,6 @@ private fun ExchangerContent(
     state: ExchangerState,
     onSellAmountChange: (TextFieldValue) -> Unit = {},
     onPickSellAccount: () -> Unit = {},
-    onReceiveAmountChange: (TextFieldValue) -> Unit = {},
     onPickReceiveAccount: () -> Unit = {},
 ) {
     Column(
@@ -96,17 +95,17 @@ private fun ExchangerContent(
                 AmountInput(
                     title = stringResource(R.string.exchanger__sell_field_title),
                     amount = state.sell,
-                    balance = state.sellBalance,
+                    balance = state.sellAccount?.balanceAmount.format(),
                     onAmountChange = { onSellAmountChange(it) },
                     onClick = { onPickSellAccount() }
                 )
 
                 AmountInput(
                     modifier = Modifier.padding(top = 8.dp),
+                    readOnly = true,
                     title = stringResource(R.string.exchanger__receive_field_title),
                     amount = state.receive,
-                    balance = state.receiveBalance,
-                    onAmountChange = { onReceiveAmountChange(it) },
+                    balance = state.receiveAccount?.balanceAmount.format(),
                     onClick = { onPickReceiveAccount() }
                 )
             }
@@ -129,7 +128,8 @@ private fun ExchangerContent(
 
         PrimaryButton(
             modifier = Modifier.padding(24.dp),
-            text = stringText(state.buttonTitle)
+            text = stringText(state.buttonTitle),
+            isLoading = state.isLoading,
         )
     }
 }
@@ -139,6 +139,7 @@ private const val AMOUNT_MAX_LENGTH = 13
 @Composable
 private fun AmountInput(
     modifier: Modifier = Modifier,
+    readOnly: Boolean = false,
     title: String = "",
     amount: TextFieldValue = TextFieldValue(""),
     balance: String = "",
@@ -177,6 +178,7 @@ private fun AmountInput(
         Row(verticalAlignment = Alignment.Bottom) {
             InputNumberDecimal(
                 value = amount,
+                readOnly = readOnly,
                 onValueChange = {
                     if (it.text.length < AMOUNT_MAX_LENGTH) onAmountChange(it)
                 },
