@@ -16,8 +16,6 @@ fun NavigationHost(provideNavController: (NavHostController) -> Unit = {}) {
         navController = navController,
         startDestination = exchangerRoute,
     ) {
-        exchangerScreen(
-            onBack = navController::popBackStack
-        )
+        exchangerScreen()
     }
 }

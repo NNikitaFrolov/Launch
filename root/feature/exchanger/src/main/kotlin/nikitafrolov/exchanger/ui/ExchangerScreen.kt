@@ -55,9 +55,7 @@ import org.koin.androidx.compose.getViewModel
 
 const val exchangerRoute = "exchanger"
 
-fun NavGraphBuilder.exchangerScreen(
-    onBack: () -> Unit,
-) {
+fun NavGraphBuilder.exchangerScreen() {
     composable(exchangerRoute) {
         ExchangerScreen()
     }
