@@ -11,11 +11,19 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.BottomSheetDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -36,9 +44,11 @@ import nikitafrolov.designsystem.component.Toolbar
 import nikitafrolov.designsystem.extencion.format
 import nikitafrolov.designsystem.icon.LaunchIcons
 import nikitafrolov.designsystem.theme.LaunchTheme
+import nikitafrolov.designsystem.tools.ClickThrottle
 import nikitafrolov.designsystem.tools.clickableThrottle
 import nikitafrolov.designsystem.tools.text.stringText
 import nikitafrolov.feature.exchanger.R
+import nikitafrolov.model.Account
 import org.koin.androidx.compose.getViewModel
 
 const val exchangerRoute = "exchanger"
@@ -61,7 +71,9 @@ private fun ExchangerScreen(
         state = state,
         onSellAmountChange = viewModel::onSellAmountChange,
         onPickSellAccount = viewModel::onPickSellAccount,
-        onPickReceiveAccount = viewModel::onPickReceiveAccount
+        onPickReceiveAccount = viewModel::onPickReceiveAccount,
+        onAccountPick = viewModel::onAccountPick,
+        onAccountPickerDismiss = viewModel::onAccountPickerDismiss,
     )
 }
 
@@ -79,6 +91,8 @@ private fun ExchangerContent(
     onSellAmountChange: (TextFieldValue) -> Unit = {},
     onPickSellAccount: () -> Unit = {},
     onPickReceiveAccount: () -> Unit = {},
+    onAccountPick: (Account, Boolean) -> Unit = { _, _ -> },
+    onAccountPickerDismiss: () -> Unit = {},
 ) {
     Column(
         modifier = Modifier
@@ -93,6 +107,7 @@ private fun ExchangerContent(
                 modifier = Modifier.padding(24.dp)
             ) {
                 AmountInput(
+                    readOnly = state.sellAccount == null || state.receiveAccount == null,
                     title = stringResource(R.string.exchanger__sell_field_title),
                     amount = state.sell,
                     balance = state.sellAccount?.balanceAmount.format(),
@@ -131,10 +146,16 @@ private fun ExchangerContent(
             text = stringText(state.buttonTitle),
             isLoading = state.isLoading,
         )
+
+        AccountPickerBottomSheet(
+            state = state.accountPickerState,
+            onAccountPick = onAccountPick,
+            onDismiss = onAccountPickerDismiss,
+        )
     }
 }
 
-private const val AMOUNT_MAX_LENGTH = 13
+private const val AMOUNT_MAX_LENGTH = 8
 
 @Composable
 private fun AmountInput(
@@ -193,6 +214,42 @@ private fun AmountInput(
                 contentDescription = null,
                 colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.secondary),
             )
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun AccountPickerBottomSheet(
+    state: AccountPickerState,
+    onAccountPick: (Account, Boolean) -> Unit,
+    onDismiss: () -> Unit
+) {
+    if (state.isShow) {
+        val clickThrottle = remember { ClickThrottle() }
+        val modalBottomSheetState = rememberModalBottomSheetState()
+
+        ModalBottomSheet(
+            onDismissRequest = { onDismiss() },
+            sheetState = modalBottomSheetState,
+            dragHandle = { BottomSheetDefaults.DragHandle() },
+        ) {
+            LazyColumn {
+                items(state.accounts) { account ->
+                    Surface(
+                        onClick = {
+                            clickThrottle.processEvent { onAccountPick(account, state.isSell) }
+                        }
+                    ) {
+                        Text(
+                            text = account.currency.unit + account.balanceAmount.format(),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 10.dp, horizontal = 24.dp)
+                        )
+                    }
+                }
+            }
         }
     }
 }

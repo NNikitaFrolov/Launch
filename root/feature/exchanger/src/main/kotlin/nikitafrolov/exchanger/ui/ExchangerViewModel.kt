@@ -6,10 +6,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.flatMapConcat
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapNotNull
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import nikitafrolov.designsystem.tools.text.Text
@@ -21,7 +21,6 @@ import nikitafrolov.model.Account
 import nikitafrolov.model.result.call
 import nikitafrolov.model.result.isSuccess
 import org.koin.android.annotation.KoinViewModel
-import java.math.BigDecimal
 
 @Immutable
 internal data class ExchangerState(
@@ -31,6 +30,14 @@ internal data class ExchangerState(
     val receiveAccount: Account? = null,
     val buttonTitle: Text = Text.Res(R.string.exchanger__button_submit),
     val isLoading: Boolean = false,
+    val accountPickerState: AccountPickerState = AccountPickerState(),
+)
+
+@Immutable
+internal data class AccountPickerState(
+    val isShow: Boolean = false,
+    val isSell: Boolean = true,
+    val accounts: List<Account> = listOf(),
 )
 
 @KoinViewModel
@@ -40,53 +47,27 @@ internal class ExchangerViewModel(
     private val getForBuyAccounts: GetForBuyAccountsUseCase,
 ) : ViewModel() {
 
-    private val sellAmountFlow = MutableStateFlow<BigDecimal?>(null)
-
     val state = MutableStateFlow(ExchangerState())
 
     init {
-        //TODO need implement account picker
         viewModelScope.launch {
-            state.update { it.copy(isLoading = true) }
-
-            val sellAccountResult = getForSellAccounts()
-            if (sellAccountResult.isSuccess()) {
-                val sellAccount = sellAccountResult.value.firstOrNull()
-                if (sellAccount != null) {
-                    getForBuyAccounts(sellAccount).call { buyResult ->
-                        buyResult.value.firstOrNull()?.let { buyAccount ->
-                            state.update {
-                                it.copy(sellAccount = sellAccount, receiveAccount = buyAccount)
-                            }
-                        }
-                    }
-                }
-            }
-
-            state.update { it.copy(isLoading = false) }
-        }
-
-
-        viewModelScope.launch {
-            combine(
-                state.map { it.sellAccount },
-                state.map { it.receiveAccount },
-            ) { sellAccount, receiveAccount ->
-                sellAccount to receiveAccount
-            }.mapNotNull { (sellAccount, receiveAccount) ->
-                if (sellAccount != null && receiveAccount != null) {
-                    sellAccount to receiveAccount
+            state.mapNotNull {
+                if (it.sellAccount != null && it.receiveAccount != null) {
+                    Triple(it.sell, it.sellAccount, it.receiveAccount)
                 } else {
                     null
                 }
-            }.flatMapConcat { (sellAccount, receiveAccount) ->
+            }.flatMapLatest { (sellField, sellAccount, receiveAccount) ->
                 observeRateByCurrency(sellAccount.currency, receiveAccount.currency)
-            }.combine(sellAmountFlow) { rate, sellAmount ->
-                val receive = if (rate.isSuccess() && sellAmount != null) {
-                    rate.value.times(sellAmount).toString()
-                } else {
-                    ""
-                }
+                    .map { rate ->
+                        val amount = sellField.text.toBigDecimalOrNull()
+                        if (rate.isSuccess() && amount != null) {
+                            rate.value.times(amount).toString()
+                        } else {
+                            ""
+                        }
+                    }
+            }.onEach { receive ->
                 state.update { it.copy(receive = TextFieldValue(receive)) }
             }.collect()
         }
@@ -94,16 +75,55 @@ internal class ExchangerViewModel(
 
     fun onSellAmountChange(field: TextFieldValue) {
         state.update { it.copy(sell = field) }
-        field.text.toBigDecimalOrNull()?.let {
-            sellAmountFlow.value = it
-        } ?: let { sellAmountFlow.value = null }
     }
 
     fun onPickSellAccount() {
-        //TODO
+        viewModelScope.launch {
+            state.update { it.copy(isLoading = true) }
+
+            getForSellAccounts().call { result ->
+                val accountPickerState = AccountPickerState(
+                    isShow = true,
+                    isSell = true,
+                    accounts = result.value
+                )
+                state.update { it.copy(accountPickerState = accountPickerState) }
+            }
+
+            state.update { it.copy(isLoading = false) }
+        }
     }
 
     fun onPickReceiveAccount() {
-        //TODO
+        state.value.sellAccount?.let { sellAccount ->
+            viewModelScope.launch {
+                state.update { it.copy(isLoading = true) }
+
+                getForBuyAccounts(sellAccount).call { result ->
+                    val accountPickerState = AccountPickerState(
+                        isShow = true,
+                        isSell = false,
+                        accounts = result.value
+                    )
+                    state.update { it.copy(accountPickerState = accountPickerState) }
+                }
+
+                state.update { it.copy(isLoading = false) }
+            }
+        }
+    }
+
+    fun onAccountPick(account: Account, isSell: Boolean) {
+        state.update {
+            if (isSell) {
+                it.copy(sellAccount = account, accountPickerState = AccountPickerState())
+            } else {
+                it.copy(receiveAccount = account, accountPickerState = AccountPickerState())
+            }
+        }
+    }
+
+    fun onAccountPickerDismiss() {
+        state.update { it.copy(accountPickerState = AccountPickerState()) }
     }
 }
