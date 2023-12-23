@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -33,6 +34,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -74,6 +76,8 @@ private fun ExchangerScreen(
         onPickReceiveAccount = viewModel::onPickReceiveAccount,
         onAccountPick = viewModel::onAccountPick,
         onAccountPickerDismiss = viewModel::onAccountPickerDismiss,
+        onSubmitClick = viewModel::onSubmitClick,
+        onNotifierDismiss = viewModel::onNotifierDismiss,
     )
 }
 
@@ -93,6 +97,8 @@ private fun ExchangerContent(
     onPickReceiveAccount: () -> Unit = {},
     onAccountPick: (Account, Boolean) -> Unit = { _, _ -> },
     onAccountPickerDismiss: () -> Unit = {},
+    onSubmitClick: () -> Unit = {},
+    onNotifierDismiss: () -> Unit = {},
 ) {
     Column(
         modifier = Modifier
@@ -145,12 +151,19 @@ private fun ExchangerContent(
             modifier = Modifier.padding(24.dp),
             text = stringText(state.buttonTitle),
             isLoading = state.isLoading,
+            enabled = state.submitEnabled,
+            onClick = onSubmitClick
         )
 
         AccountPickerBottomSheet(
             state = state.accountPickerState,
             onAccountPick = onAccountPick,
             onDismiss = onAccountPickerDismiss,
+        )
+
+        NotifyBottomSheet(
+            state = state.notifierState,
+            onDismiss = onNotifierDismiss
         )
     }
 }
@@ -242,13 +255,55 @@ private fun AccountPickerBottomSheet(
                         }
                     ) {
                         Text(
-                            text = account.currency.unit + account.balanceAmount.format(),
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(vertical = 10.dp, horizontal = 24.dp)
+                                .padding(vertical = 10.dp, horizontal = 24.dp),
+                            text = account.currency.unit + account.balanceAmount.format(),
+                            style = MaterialTheme.typography.titleMedium,
+                            color = MaterialTheme.colorScheme.primary,
                         )
                     }
                 }
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun NotifyBottomSheet(
+    state: NotifierState,
+    onDismiss: () -> Unit
+) {
+    if (state.isShow) {
+        val modalBottomSheetState = rememberModalBottomSheetState()
+
+        ModalBottomSheet(
+            onDismissRequest = { onDismiss() },
+            sheetState = modalBottomSheetState,
+            dragHandle = { BottomSheetDefaults.DragHandle() },
+        ) {
+            Column {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(200.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        modifier = Modifier.padding(24.dp),
+                        text = stringText(state.message),
+                        style = MaterialTheme.typography.headlineSmall,
+                        color = MaterialTheme.colorScheme.primary,
+                        textAlign = TextAlign.Center,
+                    )
+                }
+
+                PrimaryButton(
+                    modifier = Modifier.padding(24.dp),
+                    text = stringResource(id = R.string.exchanger__button_ok),
+                    onClick = onDismiss
+                )
             }
         }
     }

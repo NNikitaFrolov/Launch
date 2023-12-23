@@ -29,7 +29,7 @@ private const val GROUP_SIZE = 3
 private const val SEPARATOR_DECIMAL = '.'
 private const val SEPARATOR_GROUP = ' '
 
-private val numberFormatter: DecimalFormat = DecimalFormat("#,###.##").apply {
+internal val numberFormatter: DecimalFormat = DecimalFormat("#,###.##").apply {
     maximumFractionDigits = FRACTION_MAX
     minimumFractionDigits = FRACTION_MIN
     isGroupingUsed = true

@@ -4,4 +4,6 @@
     <string name="exchanger__sell_field_title">Sell</string>
     <string name="exchanger__receive_field_title">Receive</string>
     <string name="exchanger__button_submit">Submit</string>
+    <string name="exchanger__button_ok">OK</string>
+    <string name="exchanger__exchange_message_pattern">You have converted %1$s to %2$s. Commission Fee - %3$s.</string>
 </resources>
