@@ -30,6 +30,7 @@ timber = "5.0.1"
 retrofitKotlinSerialization = "1.0.0"
 googleServices = "4.4.0"
 firebaseBom = "32.7.0"
+lyricist = "1.6.2"
 
 [libraries]
 android-desugarJdkLibs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "androidDesugarJdkLibs" }
@@ -62,6 +63,8 @@ jakewharton-timber = { group = "com.jakewharton.timber", name = "timber", versio
 jakewharton-retrofit-converter = { group = "com.jakewharton.retrofit", name = "retrofit2-kotlinx-serialization-converter", version.ref = "retrofitKotlinSerialization" }
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBom" }
 firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics" }
+lyricist = { module = "cafe.adriel.lyricist:lyricist", version.ref = "lyricist" }
+lyricist-processor = { module = "cafe.adriel.lyricist:lyricist-processor", version.ref = "lyricist" }
 
 # Dependencies of the included build-logic
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
@@ -82,6 +85,7 @@ launch-android-application = { id = "launch.android.application", version = "uns
 launch-android-feature = { id = "launch.android.feature", version = "unspecified" }
 launch-android-library = { id = "launch.android.library", version = "unspecified" }
 launch-android-library-compose = { id = "launch.android.library.compose", version = "unspecified" }
+launch-android-library-lyricist = { id = "launch.android.library.lyricist", version = "unspecified" }
 launch-jvm-library = { id = "launch.jvm.library", version = "unspecified" }
 launch-koin = { id = "launch.koin", version = "unspecified" }
 launch-kotlin-serialization = { id = "launch.kotlin.serialization", version = "unspecified" }

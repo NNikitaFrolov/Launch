@@ -1,10 +1,18 @@
 plugins {
     alias(libs.plugins.launch.android.library)
     alias(libs.plugins.launch.android.library.compose)
+    alias(libs.plugins.launch.android.library.lyricist)
 }
 
 android {
     namespace = "nikitafrolov.core.designsystem"
+}
+
+ksp {
+    arg("lyricist.packageName", "nikitafrolov.core.designsystem")
+    arg("lyricist.moduleName", "designsystem")
+    arg("lyricist.internalVisibility", "false")
+    arg("lyricist.generateStringsProperty", "false")
 }
 
 dependencies {

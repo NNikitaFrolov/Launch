@@ -38,6 +38,10 @@ gradlePlugin {
             id = "launch.android.library.compose"
             implementationClass = "AndroidLibraryComposeConventionPlugin"
         }
+        register("androidLibraryLyricist") {
+            id = "launch.android.library.lyricist"
+            implementationClass = "AndroidLibraryLyricistConventionPlugin"
+        }
         register("androidFeature") {
             id = "launch.android.feature"
             implementationClass = "AndroidFeatureConventionPlugin"

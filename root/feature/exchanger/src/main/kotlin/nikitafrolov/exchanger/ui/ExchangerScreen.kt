@@ -50,6 +50,7 @@ import nikitafrolov.designsystem.tools.ClickThrottle
 import nikitafrolov.designsystem.tools.clickableThrottle
 import nikitafrolov.designsystem.tools.text.stringText
 import nikitafrolov.feature.exchanger.R
+import nikitafrolov.feature.exchanger.strings
 import nikitafrolov.model.Account
 import org.koin.androidx.compose.getViewModel
 
@@ -104,7 +105,7 @@ private fun ExchangerContent(
             .imePadding()
             .background(MaterialTheme.colorScheme.background)
     ) {
-        Toolbar(text = stringResource(R.string.exchanger__title))
+        Toolbar(text = strings.title)
 
         Box {
             Column(
