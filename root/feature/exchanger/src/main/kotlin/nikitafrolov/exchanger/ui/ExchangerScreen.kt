@@ -32,7 +32,6 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -45,11 +44,11 @@ import nikitafrolov.designsystem.component.PrimaryButton
 import nikitafrolov.designsystem.component.Toolbar
 import nikitafrolov.designsystem.extencion.format
 import nikitafrolov.designsystem.icon.LaunchIcons
+import nikitafrolov.designsystem.string.coreStrings
 import nikitafrolov.designsystem.theme.LaunchTheme
 import nikitafrolov.designsystem.tools.ClickThrottle
 import nikitafrolov.designsystem.tools.clickableThrottle
 import nikitafrolov.designsystem.tools.text.stringText
-import nikitafrolov.feature.exchanger.R
 import nikitafrolov.feature.exchanger.strings
 import nikitafrolov.model.Account
 import org.koin.androidx.compose.getViewModel
@@ -113,7 +112,7 @@ private fun ExchangerContent(
             ) {
                 AmountInput(
                     readOnly = state.sellAccount == null || state.receiveAccount == null,
-                    title = stringResource(R.string.exchanger__sell_field_title),
+                    title = strings.sellFieldTitle,
                     amount = state.sell,
                     balance = state.sellAccount?.balanceAmount.format(),
                     onAmountChange = { onSellAmountChange(it) },
@@ -123,7 +122,7 @@ private fun ExchangerContent(
                 AmountInput(
                     modifier = Modifier.padding(top = 8.dp),
                     readOnly = true,
-                    title = stringResource(R.string.exchanger__receive_field_title),
+                    title = strings.receiveFieldTitle,
                     amount = state.receive,
                     balance = state.receiveAccount?.balanceAmount.format(),
                     onClick = { onPickReceiveAccount() }
@@ -148,7 +147,7 @@ private fun ExchangerContent(
 
         PrimaryButton(
             modifier = Modifier.padding(24.dp),
-            text = stringText(state.buttonTitle),
+            text = coreStrings.buttonString.submit,
             isLoading = state.isLoading,
             enabled = state.submitEnabled,
             onClick = onSubmitClick
@@ -300,7 +299,7 @@ private fun NotifyBottomSheet(
 
                 PrimaryButton(
                     modifier = Modifier.padding(24.dp),
-                    text = stringResource(id = R.string.exchanger__button_ok),
+                    text = coreStrings.buttonString.ok,
                     onClick = onDismiss
                 )
             }

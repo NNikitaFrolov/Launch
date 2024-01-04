@@ -31,7 +31,6 @@ internal data class ExchangerState(
     val sellAccount: Account? = null,
     val receive: TextFieldValue = TextFieldValue(),
     val receiveAccount: Account? = null,
-    val buttonTitle: Text = Text.Res(R.string.exchanger__button_submit),
     val isLoading: Boolean = false,
     val accountPickerState: AccountPickerState = AccountPickerState(),
     val submitEnabled: Boolean = false,
@@ -174,6 +173,7 @@ internal class ExchangerViewModel(
                         val buy = updatedBuy.balance.minus(buyAccount.balance)
                         val buyAmount = Amount(buy, buyAccount.currency)
                         val feeAmount = Amount(fee, sellAccount.currency)
+                        //TODO change to lyricist
                         val message = Text.ResParams(
                             R.string.exchanger__exchange_message_pattern,
                             listOf(sellAmount.format(), buyAmount.format(), feeAmount.format())

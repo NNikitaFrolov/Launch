@@ -5,5 +5,9 @@ import nikitafrolov.model.Locales
 
 @LyricistStrings(languageTag = Locales.EN, default = true)
 val EnCoreStrings = CoreStrings(
-    appName = "Launch"
+    appName = "Launch",
+    buttonString = ButtonStrings(
+        ok = "OK",
+        submit = "Submit"
+    )
 )

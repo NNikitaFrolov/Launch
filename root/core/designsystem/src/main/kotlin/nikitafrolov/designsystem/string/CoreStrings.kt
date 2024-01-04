@@ -8,5 +8,11 @@ val coreStrings: CoreStrings
     get() = LocalDesignsystemStrings.current
 
 data class CoreStrings(
-    val appName: String
+    val appName: String,
+    val buttonString: ButtonStrings,
+)
+
+data class ButtonStrings(
+    val ok: String,
+    val submit: String,
 )
