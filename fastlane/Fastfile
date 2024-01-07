@@ -16,6 +16,15 @@
 default_platform(:android)
 
 platform :android do
+
+  desc "Increment version code"
+  lane :increment_vc do
+    increment_version_code(
+      gradle_file_path: "./gradle/libs.versions.toml",
+      ext_constant_name: "versionCode",
+    )
+  end
+
   desc "Runs all the tests"
   lane :test do
     gradle(task: "test")
