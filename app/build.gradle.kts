@@ -2,6 +2,7 @@ import nikitafrolov.convention.LaunchBuildType
 
 plugins {
     alias(libs.plugins.launch.android.application)
+    alias(libs.plugins.google.services)
 }
 
 android {
@@ -38,4 +39,6 @@ android {
 dependencies {
 
     implementation(projects.root.app)
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.analytics)
 }
