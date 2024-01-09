@@ -39,13 +39,15 @@ platform :android do
   end
 
   desc "Submit a new Beta Build to Firebase App Distribution"
-  lane :beta do
+  lane :beta do |options|
     increment_vc
     build_debug
 
     firebase_app_distribution(
-      app: "1:783268528847:android:92a89cafade2599a8e6dba",
-      groups: "developers"
+      app: "#{options[:app_id]}",
+      groups: "developers",
+      apk_path: "app/build/outputs/apk/debug/app-debug.apk",
+      firebase_cli_token: "#{options[:firebase_token]}"
     )
   end
 

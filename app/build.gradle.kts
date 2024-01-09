@@ -39,6 +39,7 @@ android {
 dependencies {
 
     implementation(projects.root.app)
+
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.analytics)
 }
