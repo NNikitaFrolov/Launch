@@ -26,15 +26,18 @@ platform :android do
   end
 
   desc "Runs all the tests"
-  lane :test do
-    gradle(task: "test")
+  lane :test_debug do
+    gradle(
+      task: "test",
+      build_type: "debug"
+    )
   end
 
   desc "Build debug"
   lane :build_debug do
     gradle(
       task: "assemble",
-      build_type: "debug"
+      build_type: "debug --scan"
     )
   end
 

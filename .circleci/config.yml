@@ -14,14 +14,30 @@ jobs:
           name: configure build
           command: sudo bundle install
       - run:
+          name: permissions
+          command: chmod +x checksum.sh ./gradlew
+      - run:
+          name: Generate cache key
+          command: ./checksum.sh /tmp/checksum.txt
+      - restore_cache:
+          keys:
+            - gradle-{{ .Branch }}-{{ checksum "/tmp/checksum.txt" }}
+            - gradle-{{ .Branch }}-
+            - gradle-
+      - run:
+          name: Download Dependencies
+          command: ./gradlew androidDependencies
+      - run:
           name: "Install Firebase CLI"
           command: curl -sL firebase.tools | bash
       - run:
-          name: chmod permissions
-          command: chmod +x ./gradlew
-      - run:
           name: "Deploy dev build to Firebase"
           command: bundle exec fastlane beta branch:${CIRCLE_BRANCH} app_id:${FIREBASE_APP_ID_DEV} firebase_token:$FIREBASE_TOKEN
+      - save_cache:
+          paths:
+            - ~/.gradle/caches
+            - ~/.gradle/wrapper
+          key: gradle-{{ .Branch }}-{{ checksum "/tmp/checksum.txt" }}
 
 workflows:
   build_tests_deploy:
