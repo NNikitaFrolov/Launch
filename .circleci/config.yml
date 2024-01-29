@@ -42,4 +42,8 @@ jobs:
 workflows:
   build_tests_deploy:
     jobs:
-      - deploy_dev
+      - deploy_dev:
+          filters:
+            branches:
+              only:
+                - develop
