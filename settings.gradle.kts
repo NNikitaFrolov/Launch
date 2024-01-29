@@ -29,4 +29,7 @@ rootProject.name = "Launch"
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 include(":app")
 include(":root:app")
-include(":root:model")
+include(":root:core:model")
+include(":root:core:designsystem")
+include(":root:core:network")
+include(":root:feature:exchanger")

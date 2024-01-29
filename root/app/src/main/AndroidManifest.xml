@@ -4,10 +4,11 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
+        android:name="nikitafrolov.app.App"
         android:allowBackup="false"
         android:supportsRtl="true">
         <activity
-            android:name="nikitafrolov.app.MainActivity"
+            android:name="nikitafrolov.app.Launcher"
             android:configChanges="orientation"
             android:exported="true"
             android:launchMode="singleTop"

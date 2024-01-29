@@ -2,8 +2,6 @@ import nikitafrolov.convention.LaunchBuildType
 
 plugins {
     alias(libs.plugins.launch.android.application)
-    alias(libs.plugins.launch.android.application.compose)
-    alias(libs.plugins.launch.koin)
 }
 
 android {
