@@ -22,6 +22,7 @@ dependencies {
     compileOnly(libs.android.gradlePlugin)
     compileOnly(libs.kotlin.gradlePlugin)
     compileOnly(libs.ksp.gradlePlugin)
+    compileOnly(libs.detekt.gradlePlugin)
 }
 
 gradlePlugin {
@@ -41,6 +42,10 @@ gradlePlugin {
         register("androidFeature") {
             id = "launch.android.feature"
             implementationClass = "AndroidFeatureConventionPlugin"
+        }
+        register("androidDetekt") {
+            id = "launch.android.detekt"
+            implementationClass = "AndroidDetektConventionPlugin"
         }
         register("jvmLibrary") {
             id = "launch.jvm.library"

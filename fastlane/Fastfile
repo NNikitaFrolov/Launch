@@ -33,6 +33,22 @@ platform :android do
     )
   end
 
+  desc "Run lint"
+  lane :lint_debug do
+    gradle(
+      task: "lint",
+      build_type: "debug"
+    )
+  end
+
+  desc "Run detekt"
+  lane :detekt_debug do
+    gradle(
+      task: "detekt",
+      build_type: "debug"
+    )
+  end
+
   desc "Build debug"
   lane :build_debug do
     gradle(
