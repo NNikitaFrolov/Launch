@@ -10,5 +10,4 @@ internal interface AccountLocalDataSource {
     suspend fun getAccounts(): Result<Map<Currency, Account>>
 
     suspend fun updateAccounts(newAccounts: Map<Currency, Account>): ResultEmpty
-
 }

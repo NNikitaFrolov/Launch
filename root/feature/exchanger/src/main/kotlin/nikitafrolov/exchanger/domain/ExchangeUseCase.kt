@@ -31,5 +31,4 @@ internal class ExchangeUseCase(
             exchangeResult.asFailure()
         }
     }
-
 }

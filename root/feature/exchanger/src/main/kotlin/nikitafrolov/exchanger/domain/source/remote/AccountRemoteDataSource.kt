@@ -18,5 +18,4 @@ internal interface AccountRemoteDataSource {
         buy: Account,
         sellAmount: BigDecimal
     ): Result<Triple<Account, Account, BigDecimal>>
-
 }

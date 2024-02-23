@@ -53,10 +53,10 @@ import nikitafrolov.feature.exchanger.R
 import nikitafrolov.model.Account
 import org.koin.androidx.compose.getViewModel
 
-const val exchangerRoute = "exchanger"
+const val ExchangerRoute = "exchanger"
 
 fun NavGraphBuilder.exchangerScreen() {
-    composable(exchangerRoute) {
+    composable(ExchangerRoute) {
         ExchangerScreen()
     }
 }
@@ -86,6 +86,8 @@ private fun ExchangerPreview() {
         ExchangerContent(ExchangerState())
     }
 }
+
+private const val DegreesIcon = 90f
 
 @Composable
 private fun ExchangerContent(
@@ -135,7 +137,7 @@ private fun ExchangerContent(
                     .size(32.dp)
                     .clip(MaterialTheme.shapes.extraLarge)
                     .background(MaterialTheme.colorScheme.primary)
-                    .rotate(90f),
+                    .rotate(DegreesIcon),
                 painter = painterResource(LaunchIcons.CompareArrows),
                 contentDescription = null,
                 colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onPrimary),
@@ -166,7 +168,7 @@ private fun ExchangerContent(
     }
 }
 
-private const val AMOUNT_MAX_LENGTH = 8
+private const val AmountMaxLength = 8
 
 @Composable
 private fun AmountInput(
@@ -186,7 +188,6 @@ private fun AmountInput(
             .clickableThrottle { onClick() }
             .padding(16.dp)
     ) {
-
         Row(modifier = Modifier.fillMaxWidth()) {
             Text(
                 text = title,
@@ -212,7 +213,7 @@ private fun AmountInput(
                 value = amount,
                 readOnly = readOnly,
                 onValueChange = {
-                    if (it.text.length < AMOUNT_MAX_LENGTH) onAmountChange(it)
+                    if (it.text.length < AmountMaxLength) onAmountChange(it)
                 },
                 textStyle = MaterialTheme.typography.headlineLarge
                     .copy(color = MaterialTheme.colorScheme.onPrimaryContainer),

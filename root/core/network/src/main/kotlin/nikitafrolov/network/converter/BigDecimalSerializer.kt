@@ -13,7 +13,7 @@ import kotlinx.serialization.json.JsonUnquotedLiteral
 import kotlinx.serialization.json.jsonPrimitive
 import java.math.BigDecimal
 
-typealias BigDecimalSerializable = @Serializable(with = BigDecimalNumericSerializer::class) BigDecimal
+typealias BigDecimalSerializable = @Serializable(BigDecimalNumericSerializer::class) BigDecimal
 
 internal object BigDecimalNumericSerializer : KSerializer<BigDecimal> {
 

@@ -21,7 +21,7 @@ internal class ObserveRateByCurrencyUseCase(
         private const val SYNC_INTERVAL_SECONDS = 5
     }
 
-    suspend operator fun invoke(sell: Currency, buy: Currency): Flow<Result<BigDecimal>> {
+    operator fun invoke(sell: Currency, buy: Currency): Flow<Result<BigDecimal>> {
         return tickerFlow(SYNC_INTERVAL_SECONDS.seconds)
             .map { remoteDataSource.getRateByCurrency(sell, buy) }
     }

@@ -36,5 +36,4 @@ internal class GetForBuyAccountsUseCase(
             resultCurrencies.asFailure()
         }
     }
-
 }

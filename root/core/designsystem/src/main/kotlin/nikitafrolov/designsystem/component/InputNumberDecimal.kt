@@ -23,22 +23,22 @@ import java.math.RoundingMode
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 
-private const val FRACTION_MIN = 0
-private const val FRACTION_MAX = 2
-private const val GROUP_SIZE = 3
-private const val SEPARATOR_DECIMAL = '.'
-private const val SEPARATOR_GROUP = ' '
+private const val FractionMin = 0
+private const val FractionMax = 2
+private const val GroupSize = 3
+private const val SeparatorDecimal = '.'
+private const val SeparatorGroup = ' '
 
 internal val numberFormatter: DecimalFormat = DecimalFormat("#,###.##").apply {
-    maximumFractionDigits = FRACTION_MAX
-    minimumFractionDigits = FRACTION_MIN
+    maximumFractionDigits = FractionMax
+    minimumFractionDigits = FractionMin
     isGroupingUsed = true
-    groupingSize = GROUP_SIZE
+    groupingSize = GroupSize
     roundingMode = RoundingMode.HALF_UP
 
     decimalFormatSymbols = DecimalFormatSymbols().apply {
-        groupingSeparator = SEPARATOR_GROUP
-        decimalSeparator = SEPARATOR_DECIMAL
+        groupingSeparator = SeparatorGroup
+        decimalSeparator = SeparatorDecimal
     }
 }
 
@@ -103,14 +103,14 @@ private class DecimalAmountTransformation : VisualTransformation {
     }
 
     private fun reformat(original: String): Transformation {
-        val parts = original.split(SEPARATOR_DECIMAL)
-        check(parts.size < 3) { "original text must have only one dot" }
+        val parts = original.split(SeparatorDecimal)
+        check(parts.size < GroupSize) { "original text must have only one dot" }
 
-        val hasEndDot = original.endsWith(SEPARATOR_DECIMAL)
+        val hasEndDot = original.endsWith(SeparatorDecimal)
         val formatted = when {
             original.isNotEmpty() && parts.size == 1 -> {
                 numberFormatter.format(parts[0].toBigDecimalOrNull() ?: 0).let {
-                    if (hasEndDot) it + SEPARATOR_DECIMAL else it
+                    if (hasEndDot) it + SeparatorDecimal else it
                 }
             }
 
@@ -129,7 +129,7 @@ private class DecimalAmountTransformation : VisualTransformation {
         var specialCharsCount = 0
 
         formatted.forEachIndexed { index, char ->
-            if (SEPARATOR_GROUP == char) {
+            if (SeparatorGroup == char) {
                 specialCharsCount++
             } else {
                 originalToTransformed.add(index)
@@ -145,7 +145,7 @@ private class DecimalAmountTransformation : VisualTransformation {
 
 private fun filteredDecimal(input: TextFieldValue): TextFieldValue {
     var inputText = input.text.replaceFirst(regex = Regex("^0+(?!$)"), "")
-    val startsWithDot = input.text.startsWith(SEPARATOR_DECIMAL)
+    val startsWithDot = input.text.startsWith(SeparatorDecimal)
 
     var selectionStart = input.selection.start
     var selectionEnd = input.selection.end
@@ -161,15 +161,15 @@ private fun filteredDecimal(input: TextFieldValue): TextFieldValue {
         }
     }
 
-    val parts = inputText.split(SEPARATOR_DECIMAL)
+    val parts = inputText.split(SeparatorDecimal)
     val text = if (parts.size > 1) {
-        parts[0] + SEPARATOR_DECIMAL + parts.subList(1, parts.size)
+        parts[0] + SeparatorDecimal + parts.subList(1, parts.size)
             .joinToString("").take(2)
     } else {
         parts.joinToString("")
     }
     return TextFieldValue(
-        if (text.startsWith(SEPARATOR_DECIMAL)) "0$text" else text,
+        if (text.startsWith(SeparatorDecimal)) "0$text" else text,
         TextRange(selectionStart, selectionEnd)
     )
 }

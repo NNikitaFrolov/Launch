@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
-import nikitafrolov.exchanger.ui.exchangerRoute
+import nikitafrolov.exchanger.ui.ExchangerRoute
 import nikitafrolov.exchanger.ui.exchangerScreen
 
 @Composable
@@ -14,7 +14,7 @@ fun NavigationHost(provideNavController: (NavHostController) -> Unit = {}) {
 
     NavHost(
         navController = navController,
-        startDestination = exchangerRoute,
+        startDestination = ExchangerRoute,
     ) {
         exchangerScreen()
     }

@@ -8,7 +8,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 
-private const val CLICK_THROTTLE_TIME = 300L
+private const val ClickThrottleTime = 300L
 
 @Immutable
 class ClickThrottle {
@@ -17,7 +17,7 @@ class ClickThrottle {
 
     private var lastEventTimeMs: Long = 0
     fun processEvent(event: () -> Unit) {
-        if (now - lastEventTimeMs >= CLICK_THROTTLE_TIME) {
+        if (now - lastEventTimeMs >= ClickThrottleTime) {
             event.invoke()
             lastEventTimeMs = now
         }

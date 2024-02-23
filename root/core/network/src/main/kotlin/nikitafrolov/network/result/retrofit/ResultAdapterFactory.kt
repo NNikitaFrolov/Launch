@@ -19,11 +19,11 @@ internal class ResultAdapterFactory : CallAdapter.Factory() {
             val callInnerType: Type = getParameterUpperBound(0, returnType)
             if (getRawType(callInnerType) == Result::class.java) {
                 // resultType is Call<Result<*>> | callInnerType is Result<*>
-                if (callInnerType is ParameterizedType) {
-                    val resultInnerType = getParameterUpperBound(0, callInnerType)
-                    return ResultCallAdapter<Any?>(resultInnerType)
+                return if (callInnerType is ParameterizedType) {
+                    ResultCallAdapter<Any?>(getParameterUpperBound(0, callInnerType))
+                } else {
+                    ResultCallAdapter<Nothing>(Nothing::class.java)
                 }
-                return ResultCallAdapter<Nothing>(Nothing::class.java)
             }
         }
 

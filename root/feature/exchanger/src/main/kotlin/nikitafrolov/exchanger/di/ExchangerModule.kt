@@ -27,5 +27,4 @@ class ExchangerModule {
     internal fun provideAccountLocalDataSource(
         dataSource: AccountLocalDataSourceImpl
     ): AccountLocalDataSource = dataSource
-
 }
