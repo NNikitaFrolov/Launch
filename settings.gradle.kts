@@ -14,5 +14,22 @@ dependencyResolutionManagement {
     }
 }
 
+plugins {
+    id("com.gradle.enterprise") version ("3.16.1")
+}
+gradleEnterprise {
+    buildScan {
+        termsOfServiceUrl = "https://gradle.com/terms-of-service"
+        termsOfServiceAgree = "yes"
+    }
+}
+
 rootProject.name = "Launch"
+
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 include(":app")
+include(":root:app")
+include(":root:core:model")
+include(":root:core:designsystem")
+include(":root:core:network")
+include(":root:feature:exchanger")

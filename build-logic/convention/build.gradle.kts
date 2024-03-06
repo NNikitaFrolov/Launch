@@ -22,6 +22,7 @@ dependencies {
     compileOnly(libs.android.gradlePlugin)
     compileOnly(libs.kotlin.gradlePlugin)
     compileOnly(libs.ksp.gradlePlugin)
+    compileOnly(libs.detekt.gradlePlugin)
 }
 
 gradlePlugin {
@@ -29,10 +30,6 @@ gradlePlugin {
         register("androidApplication") {
             id = "launch.android.application"
             implementationClass = "AndroidApplicationConventionPlugin"
-        }
-        register("androidApplicationCompose") {
-            id = "launch.android.application.compose"
-            implementationClass = "AndroidApplicationComposeConventionPlugin"
         }
         register("androidLibrary") {
             id = "launch.android.library"
@@ -46,9 +43,21 @@ gradlePlugin {
             id = "launch.android.feature"
             implementationClass = "AndroidFeatureConventionPlugin"
         }
+        register("androidDetekt") {
+            id = "launch.android.detekt"
+            implementationClass = "AndroidDetektConventionPlugin"
+        }
         register("jvmLibrary") {
             id = "launch.jvm.library"
             implementationClass = "JvmLibraryConventionPlugin"
+        }
+        register("koin") {
+            id = "launch.koin"
+            implementationClass = "KoinConventionPlugin"
+        }
+        register("kotlinSerialization") {
+            id = "launch.kotlin.serialization"
+            implementationClass = "KotlinSerializationPlugin"
         }
     }
 }

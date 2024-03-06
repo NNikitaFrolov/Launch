@@ -1,0 +1,49 @@
+version: 2.1
+
+jobs:
+
+  deploy_dev:
+    docker:
+      - image: cimg/android:2023.12.1
+    steps:
+      - checkout
+      - run:
+          name: Store Google Services Key
+          command: echo $GOOGLE_SERVICES_KEY_DEV | base64 -di > app/google-services.json
+      - run:
+          name: configure build
+          command: sudo bundle install
+      - run:
+          name: permissions
+          command: chmod +x checksum.sh ./gradlew
+      - run:
+          name: Generate cache key
+          command: ./checksum.sh /tmp/checksum.txt
+      - restore_cache:
+          keys:
+            - gradle-{{ .Branch }}-{{ checksum "/tmp/checksum.txt" }}
+            - gradle-{{ .Branch }}-
+            - gradle-
+      - run:
+          name: Download Dependencies
+          command: ./gradlew androidDependencies
+      - run:
+          name: "Install Firebase CLI"
+          command: curl -sL firebase.tools | bash
+      - run:
+          name: "Deploy dev build to Firebase"
+          command: bundle exec fastlane beta branch:${CIRCLE_BRANCH} app_id:${FIREBASE_APP_ID_DEV} firebase_token:$FIREBASE_TOKEN
+      - save_cache:
+          paths:
+            - ~/.gradle/caches
+            - ~/.gradle/wrapper
+          key: gradle-{{ .Branch }}-{{ checksum "/tmp/checksum.txt" }}
+
+workflows:
+  build_tests_deploy:
+    jobs:
+      - deploy_dev:
+          filters:
+            branches:
+              only:
+                - develop

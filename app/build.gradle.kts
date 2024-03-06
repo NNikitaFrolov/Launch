@@ -1,6 +1,8 @@
+import nikitafrolov.convention.LaunchBuildType
+
 plugins {
     alias(libs.plugins.launch.android.application)
-    alias(libs.plugins.launch.android.application.compose)
+    alias(libs.plugins.google.services)
 }
 
 android {
@@ -19,14 +21,12 @@ android {
 
     buildTypes {
         debug {
-            applicationIdSuffix = ".debug"
+            applicationIdSuffix = LaunchBuildType.DEBUG.applicationIdSuffix
         }
         release {
-            isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
+            isMinifyEnabled = true
+            applicationIdSuffix = LaunchBuildType.RELEASE.applicationIdSuffix
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
     packaging {
@@ -38,18 +38,8 @@ android {
 
 dependencies {
 
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.lifecycle.runtimeCompose)
-    implementation(libs.androidx.activity.compose)
-    implementation(libs.androidx.compose.ui.tooling.preview)
-    implementation(libs.androidx.compose.material3)
+    implementation(projects.root.app)
 
-    testImplementation(libs.junit)
-
-    androidTestImplementation(libs.androidx.test.ext)
-    androidTestImplementation(libs.androidx.test.espresso.core)
-    androidTestImplementation(libs.androidx.compose.ui.test)
-
-    debugImplementation(libs.androidx.compose.ui.tooling)
-    debugImplementation(libs.androidx.compose.ui.testManifest)
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.analytics)
 }
