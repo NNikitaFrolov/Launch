@@ -9,7 +9,7 @@ jobs:
       - checkout
       - run:
           name: Store Google Services Key
-          command: echo $GOOGLE_SERVICES_KEY_DEV | base64 -di > app/google-services.json
+          command: echo $GOOGLE_SERVICES_KEY | base64 -di > app/google-services.json
       - run:
           name: configure build
           command: sudo bundle install

@@ -1,4 +1,5 @@
 import nikitafrolov.convention.LaunchBuildType
+import java.util.Properties
 
 plugins {
     alias(libs.plugins.launch.android.application)
@@ -16,6 +17,20 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
+        }
+    }
+
+    signingConfigs {
+        create(LaunchBuildType.RELEASE.value) {
+            val keyStorePropertiesFile = file("../cert/keystore.properties")
+            val keyStoreProperties =  Properties().apply {
+                load(keyStorePropertiesFile.inputStream())
+            }
+
+            storeFile = file("../cert/keystore.jks")
+            storePassword = keyStoreProperties.getProperty("storePassword")
+            keyAlias = keyStoreProperties.getProperty("keyAlias")
+            keyPassword = keyStoreProperties.getProperty("keyPassword")
         }
     }
 

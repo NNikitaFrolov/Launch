@@ -1,6 +1,6 @@
 package nikitafrolov.convention
 
-enum class LaunchBuildType(val applicationIdSuffix: String? = null) {
-    DEBUG(".debug"),
-    RELEASE
+enum class LaunchBuildType(val value: String, val applicationIdSuffix: String? = null) {
+    DEBUG("debug", ".debug"),
+    RELEASE("release")
 }
