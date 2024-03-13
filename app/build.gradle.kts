@@ -15,9 +15,6 @@ android {
         versionName = libs.versions.versionName.get()
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        vectorDrawables {
-            useSupportLibrary = true
-        }
     }
 
     signingConfigs {
@@ -41,7 +38,7 @@ android {
         release {
             isMinifyEnabled = true
             applicationIdSuffix = LaunchBuildType.RELEASE.applicationIdSuffix
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            signingConfig = signingConfigs.findByName(LaunchBuildType.RELEASE.value)
         }
     }
     packaging {

@@ -18,6 +18,14 @@ internal fun Project.configureKotlinAndroid(
 
         defaultConfig {
             minSdk = libs.findVersion("minSdk").get().toString().toInt()
+
+            val proguardFiles = rootProject.fileTree("proguard").files +
+                    getDefaultProguardFile("proguard-android-optimize.txt")
+            proguardFiles(*proguardFiles.toTypedArray())
+
+            vectorDrawables {
+                useSupportLibrary = true
+            }
         }
 
         compileOptions {
