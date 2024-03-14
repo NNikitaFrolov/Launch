@@ -46,10 +46,10 @@ jobs:
       - checkout
       - run:
           name: Decode keystore
-          command: echo $KEYSTORE | base64 -d | tee cert/keystore.jks > /dev/null
+          command: echo $KEYSTORE | base64 -di > cert/keystore.jks
       - run:
           name: Decode keystore.properties
-          command: echo $KEYSTORE_PROP | base64 -di > cert/keystore.
+          command: echo $KEYSTORE_PROP | base64 -di > cert/keystore.properties
       - run:
           name: Decode Google Play key
           command: echo $GOOGLE_PLAY_KEY | base64 -di > cert/play-store-credentials.json
