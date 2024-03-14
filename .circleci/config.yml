@@ -46,7 +46,7 @@ jobs:
       - checkout
       - run:
           name: Create Cert Directory
-          command: sudo mkdir
+          command: sudo mkdir cert
       - run:
           name: Decode keystore
           command: echo $KEYSTORE | base64 -di > cert/keystore.jks
