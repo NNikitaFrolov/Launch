@@ -63,6 +63,9 @@ jobs:
           name: configure build
           command: sudo bundle install
       - run:
+          name: permissions
+          command: chmod +x ./gradlew
+      - run:
           name: Upload to Google App Store
           command: bundle exec fastlane deploy --verbose
 
