@@ -39,6 +39,30 @@ jobs:
             - ~/.gradle/wrapper
           key: gradle-{{ .Branch }}-{{ checksum "/tmp/checksum.txt" }}
 
+  release:
+    docker:
+      - image: cimg/android:2023.12.1
+    steps:
+      - checkout
+      - run:
+          name: Decode keystore
+          command: echo $KEYSTORE | base64 -d | tee cert/keystore.jks > /dev/null
+      - run:
+          name: Decode keystore.properties
+          command: echo $KEYSTORE_PROP | base64 -di > cert/keystore.
+      - run:
+          name: Decode Google Play key
+          command: echo $GOOGLE_PLAY_KEY | base64 -di > cert/play-store-credentials.json
+      - run:
+          name: Decode Google Services Key
+          command: echo $GOOGLE_SERVICES_KEY | base64 -di > app/google-services.json
+      - run:
+          name: configure build
+          command: sudo bundle install
+      - run:
+          name: Upload to Google App Store
+          command: bundle exec fastlane deploy --verbose
+
 workflows:
   build_tests_deploy:
     jobs:
@@ -47,3 +71,16 @@ workflows:
             branches:
               only:
                 - develop
+      - request-aab-and-prepare-release:
+          type: approval
+          filters:
+            branches:
+              only:
+                - master
+      - release:
+          requires:
+            - request-aab-and-prepare-release
+          filters:
+            branches:
+              only:
+                - master
