@@ -15,6 +15,8 @@ android {
         versionName = libs.versions.versionName.get()
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        signingConfig = signingConfigs.getByName(LaunchBuildType.DEBUG.value)
     }
 
     signingConfigs {
