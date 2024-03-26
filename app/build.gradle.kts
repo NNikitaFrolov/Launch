@@ -8,6 +8,8 @@ plugins {
 
 android {
     namespace = "nikitafrolov.launch"
+    val keyStorePropertiesFilePath = "../cert/keystore.properties"
+    val keyStoreFilePath = "../cert/keystore.jks"
 
     defaultConfig {
         applicationId = "nikitafrolov.launch"
@@ -20,14 +22,14 @@ android {
     }
 
     signingConfigs {
-        if (rootProject.file("keystore.properties").exists()) {
-            create(LaunchBuildType.RELEASE.value) {
-                val keyStorePropertiesFile = file("../cert/keystore.properties")
-                val keyStoreProperties =  Properties().apply {
+        create(LaunchBuildType.RELEASE.value) {
+            val keyStorePropertiesFile = file(keyStorePropertiesFilePath)
+            if (keyStorePropertiesFile.exists()) {
+                val keyStoreProperties = Properties().apply {
                     load(keyStorePropertiesFile.inputStream())
                 }
 
-                storeFile = file("../cert/keystore.jks")
+                storeFile = file(keyStoreFilePath)
                 storePassword = keyStoreProperties.getProperty("storePassword")
                 keyAlias = keyStoreProperties.getProperty("keyAlias")
                 keyPassword = keyStoreProperties.getProperty("keyPassword")
@@ -42,7 +44,9 @@ android {
         release {
             isMinifyEnabled = true
             applicationIdSuffix = LaunchBuildType.RELEASE.applicationIdSuffix
-            signingConfig = signingConfigs.findByName(LaunchBuildType.RELEASE.value)
+            if (file(keyStorePropertiesFilePath).exists()) {
+                signingConfig = signingConfigs.findByName(LaunchBuildType.RELEASE.value)
+            }
         }
     }
     packaging {
