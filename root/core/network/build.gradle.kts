@@ -10,11 +10,13 @@ android {
 }
 
 dependencies {
-    api(libs.squareup.retrofit)
-
     implementation(projects.root.core.model)
 
-    implementation(libs.squareup.okHttp)
     implementation(libs.jakewharton.timber)
-    implementation(libs.jakewharton.retrofit.converter)
+
+    api(libs.ktor.client.core)
+    implementation(libs.ktor.client.cio)
+    implementation(libs.ktor.client.logging)
+    implementation(libs.ktor.client.content.negotiation)
+    implementation(libs.ktor.serialization.kotlinx.json)
 }

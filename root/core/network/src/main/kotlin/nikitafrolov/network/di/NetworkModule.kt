@@ -1,50 +1,46 @@
 package nikitafrolov.network.di
 
-import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
+import io.ktor.client.HttpClient
+import io.ktor.client.engine.cio.CIO
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.plugins.defaultRequest
+import io.ktor.client.plugins.logging.LogLevel
+import io.ktor.client.plugins.logging.Logger
+import io.ktor.client.plugins.logging.Logging
+import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.core.annotation.ComponentScan
-import org.koin.core.annotation.Factory
 import org.koin.core.annotation.Module
-import retrofit2.Converter
-import retrofit2.Retrofit
+import org.koin.core.annotation.Single
 import timber.log.Timber
 
 @Module
 @ComponentScan("nikitafrolov.network")
 class NetworkModule {
 
-    private fun createOkhttpBuilder(): OkHttpClient.Builder {
-        return OkHttpClient.Builder()
-            .retryOnConnectionFailure(true)
-    }
+    @Single
+    fun provideKtor(): HttpClient {
+        return HttpClient(CIO) {
+            defaultRequest { url("https://developers.paysera.com/") }
 
-    private fun createHttpLoggingInterceptor(): HttpLoggingInterceptor {
-        return HttpLoggingInterceptor { message ->
-            Timber.tag("OkHttp").d(message)
-        }.apply {
-            level = HttpLoggingInterceptor.Level.BODY
+            expectSuccess = true
+
+            install(ContentNegotiation) {
+                json(
+                    Json {
+                        ignoreUnknownKeys = true
+                    }
+                )
+            }
+
+            install(Logging) {
+                logger = object : Logger {
+                    override fun log(message: String) {
+                        Timber.tag("Logger Ktor =>").d(message)
+                    }
+                }
+                level = LogLevel.BODY
+            }
         }
-    }
-
-    @Factory
-    fun provideOkhttpClient(): OkHttpClient {
-        val builder = createOkhttpBuilder()
-        builder.addInterceptor(createHttpLoggingInterceptor())
-        return builder.build()
-    }
-
-    @Factory
-    fun provideRetrofit(retrofitProvider: RetrofitProvider): Retrofit {
-        return retrofitProvider
-            .provide("https://developers.paysera.com/")
-            .build()
-    }
-
-    @Factory
-    fun provideConverterFactory(): Converter.Factory {
-        return Json.asConverterFactory("application/json".toMediaType())
     }
 }

@@ -1,11 +1,12 @@
 package nikitafrolov.exchanger.data.remote.api
 
+import io.ktor.client.HttpClient
 import nikitafrolov.exchanger.data.remote.model.CurrencyRateDto
 import nikitafrolov.model.result.Result
-import retrofit2.http.GET
+import nikitafrolov.network.result.getResult
 
-internal interface CurrencyApi {
+internal class CurrencyApi(private val ktor: HttpClient) {
 
-    @GET("tasks/api/currency-exchange-rates")
-    suspend fun currencyExchangeRates(): Result<CurrencyRateDto>
+    suspend fun currencyExchangeRates(): Result<CurrencyRateDto> =
+        ktor.getResult("tasks/api/currency-exchange-rates")
 }
